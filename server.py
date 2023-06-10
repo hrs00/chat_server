@@ -22,8 +22,12 @@ def interact(conn, username):
     while True:
         try:
             message = str(conn.recv(1024).decode())
-            if message or message != "\n": 
-                broadcast(username + ": " + message)
+            if "check" in message: 
+                broadcast(username + ": " + message[5:])
+            else:
+                clients.remove(conn)
+                broadcast(username + " left")
+                break
         except:
             clients.remove(conn)
             broadcast(username + " left")
@@ -32,7 +36,7 @@ def interact(conn, username):
 def login(conn, address):
     conn.sendall("====================Login==================\nEnter Username: ".encode())
     while True:
-        username = str(conn.recv(1024).decode()).strip()
+        username = str(conn.recv(1024).decode()).strip()[5:]
         if username == "exit":
             handler(conn, address)
             break
@@ -40,7 +44,7 @@ def login(conn, address):
             conn.sendall("Username doesn't exist\nEnter Username: ".encode())
             continue
         conn.sendall("Enter Password: ".encode())
-        password = str(conn.recv(1024).decode())
+        password = str(conn.recv(1024).decode())[5:]
         if not any(user["username"] == username and user["password"] == password for user in users):
             conn.sendall("Incorrect password\n".encode())
             continue
@@ -56,7 +60,7 @@ def login(conn, address):
 def register(conn, address):
     conn.sendall(("=================Register==================\nEnter Username: ").encode())
     while True:
-        uname = str(conn.recv(1024).decode()).strip()
+        uname = str(conn.recv(1024).decode()).strip()[5:]
         if uname == "exit":
             handler(conn, address)
             break
@@ -68,7 +72,7 @@ def register(conn, address):
     conn.send(("Enter Password: ").encode())
     pwd_data = conn.recv(1024).decode()
     username = uname
-    password = str(pwd_data)
+    password = str(pwd_data)[5:]
     users.append({"username": username, "password": password})
     clients.append(conn)
     print(address, username)
@@ -78,7 +82,7 @@ def register(conn, address):
 def handler(conn, address):
     while True:
         conn.sendall(("\nCommands:\n\tCtrl + C - To exit chat server\n\tregister - To create new user account\n\tlogin - Login to user account\n\texit - Exit from registration/login process(not while entering password)\n\n").encode())
-        response = (str(conn.recv(1024).decode())).strip()
+        response = (str(conn.recv(1024).decode())).strip()[5:]
         if response == "register":
             user = register(conn, address)
             break
