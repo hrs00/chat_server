@@ -67,6 +67,7 @@ It will print IP address of the chat_server.
 ![image](https://github.com/hrs00/chat_server/assets/135930294/a7ebe18c-f348-40cb-b5bf-6a3f155ba69e)
  
 The python script uses boto3 module to create EC2 instance and it's assosciated security group and IAM role.
+This script needs to run only once. Running it again will throw errors. 
   
 ### 5. Run the client
 
