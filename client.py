@@ -19,7 +19,7 @@ except:
 def write():
     while True:
         try:
-            data = input()
+            data = "check" + input()
             conn.sendall(data.encode())
         except:
             return
