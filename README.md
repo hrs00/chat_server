@@ -2,7 +2,7 @@
 
 ## About
 
-chat_server is program that is built to be hosted on AWS EC2 instance and lets client access a text-based interface to talk with other clients connected to chat_server over TCP. The repository has an EC2 initialization script that creates EC2 instance with all it's required components.
+chat_server is a program that is built to be hosted on AWS EC2 instance and lets client access a text-based interface to talk with other clients connected to chat_server over TCP. The repository has an EC2 initialization script that creates EC2 instance with all it's required components.
 
 ## Requisites
 
