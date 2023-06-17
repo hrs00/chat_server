@@ -3,6 +3,7 @@
 import boto3
 import json
 import time
+import uuid
 
 ec2 = boto3.client("ec2")
 iam = boto3.client("iam")
@@ -18,9 +19,12 @@ sudo python3 server.py""".format(s3_bucket)
 
 vpc = ec2.describe_vpcs()
 vpc_id = vpc["Vpcs"][0]["VpcId"]
+
+group_name = "chat-server-sg-"+str(uuid.uuid4())
+
 security_group = ec2.create_security_group(
         Description="chat_server",
-        GroupName="chat_server_sg",
+        GroupName=group_name,
         VpcId = vpc_id
     )
 sg_id = security_group["GroupId"]
@@ -52,29 +56,33 @@ assume_role_policy_document = json.dumps({
   }
 })
 
+role_name = "s3-access-" + str(uuid.uuid4())
+
 iam.create_role(
-    RoleName = "s3_access",
+    RoleName = role_name,
     AssumeRolePolicyDocument = assume_role_policy_document
     )
 
 iam.attach_role_policy(
-    RoleName="s3_access",
+    RoleName=role_name,
     PolicyArn="arn:aws:iam::aws:policy/AmazonS3FullAccess")
 
-iam.create_instance_profile(InstanceProfileName="csrv")
+profile_name = uuid.uuid4()
+
+iam.create_instance_profile(InstanceProfileName=str(profile_name))
 
 waiter = iam.get_waiter("instance_profile_exists")
-waiter.wait(InstanceProfileName="csrv",WaiterConfig={"Delay": 4})
+waiter.wait(InstanceProfileName=str(profile_name),WaiterConfig={"Delay": 4})
 
 iam.add_role_to_instance_profile(
-    InstanceProfileName="csrv",
-    RoleName="s3_access")
+    InstanceProfileName=str(profile_name),
+    RoleName=role_name)
 
 waiter = iam.get_waiter("instance_profile_exists")
-waiter.wait(InstanceProfileName="csrv",WaiterConfig={"Delay": 4})
+waiter.wait(InstanceProfileName=str(profile_name),WaiterConfig={"Delay": 4})
 
 iam_inst = iam.get_instance_profile(
-        InstanceProfileName="csrv"
+        InstanceProfileName=str(profile_name)
         )
 
 iam_inst_arn = iam_inst["InstanceProfile"]["Arn"]
