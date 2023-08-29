@@ -6,7 +6,7 @@ chat_server is a program that is built to be hosted on AWS EC2 instance and lets
 
 ## Requisites
 
-It requires a free-tier AWS account to host the chat server and <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html"> AWS CLI installed</a>. Then <a href="https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html">create access keys</a> in AWS console with IAM full access, S3 full access and EC2 full access and use them to <a href="https://aws.amazon.com/getting-started/guides/setup-environment/module-three/">configure AWS CLI</a>.
+It requires a free-tier AWS account to host the chat server and <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html"> AWS CLI installed</a>. Then <a href="https://docs.aws.amazon.com/powershell/latest/userguide/pstools-appendix-sign-up.html">create access keys</a> in AWS console with IAM full access, S3 full access, EC2 full access and use them to <a href="https://aws.amazon.com/getting-started/guides/setup-environment/module-three/">configure AWS CLI</a>.
 
 <a href="https://www.python.org/downloads/">Python3</a> and <a href="https://pypi.org/project/boto3/">boto3</a> module also needs to be installed.
 
